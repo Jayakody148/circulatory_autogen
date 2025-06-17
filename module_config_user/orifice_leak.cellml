@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model name="modules" xmlns="http://www.cellml.org/cellml/1.1#" xmlns:cellml="http://www.cellml.org/cellml/1.1#">
+    <component name="orifice_leak">
+        <variable name="t" public_interface="in" units="second"/>
+        <variable name="u_in" public_interface="in" units="J_per_m3"/>
+        <variable name="u_out" public_interface="in" units="J_per_m3"/>
+        <variable initial_value="0.0" name="v" public_interface="out" units="m3_per_s"/>
+        <variable initial_value="0.0" name="q_lost" public_interface="out" units="m3"/>
+        <!--constants-->
+        <variable name="C_d" public_interface="in" units="dimensionless"/>
+        <variable name="rho" public_interface="in" units="Js2_per_m5"/>
+        <!--wound-->
+        <variable name="r" public_interface="in" units="metre"/>
+        <variable name="A" public_interface="out" units="m2"/>
+        <!--flow equation-->
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+                <eq/>
+                <ci>A</ci>
+                <apply>
+                    <times/>
+                    <pi/>
+                    <apply>
+                        <power/>
+                        <ci>r</ci>
+                        <cn cellml:units="dimensionless">2</cn>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>v</ci>
+                <apply>
+                    <times/>
+                    <ci>C_d</ci>
+                    <ci>A</ci>
+                    <apply>
+                        <root/>
+                        <apply>
+                            <divide/>
+                            <apply>
+                                <times/>
+                                <cn cellml:units="dimensionless">2</cn>
+                                <apply>
+                                    <minus/>
+                                    <ci>u_in</ci>
+                                    <ci>u_out</ci>
+                                </apply>
+                            </apply>
+                            <ci>rho</ci>
+                        </apply>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>t</ci>
+                    </bvar>
+                    <ci>q_lost</ci>
+                </apply>
+                <ci>v</ci>
+            </apply>
+        </math>
+    </component>
+</model>
